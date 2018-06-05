@@ -82,8 +82,8 @@ check_for_autopass() {
     fi
 
     # only run provisioner-less on branches it's supported on
-    if [ "$job_name" == ssi-without-provisioner ] &&
-       git log | grep "Changes to run SSI in Vagrant"; then
+    if [ "$job_name" = "ssi-without-provisioner" ] &&
+       ! git log | grep "Changes to run SSI in Vagrant"; then
         fake_test_pass "tests_skipped_because_unsupported_no_provisioner" \
                        "$WORKSPACE/test_reports/" "$BUILD_NUMBER"
     fi

@@ -38,6 +38,9 @@ cleanup() {
     fi
 
     echo "exit trap done" >&2
+hostname
+pwd
+ls -l
     if [ -n "$tmpfile" -a -e "$tmpfile" ]; then
         cat $tmpfile | mail -s "job aborted" brian.murrell@intel.com
         #rm $tmpfile
