@@ -106,7 +106,7 @@ create_cluster:
 	    fi;                                                                          \
 	    ls -ld /tmp/; \
 	    touch /tmp/virsh3BVa6M.xml || true; \
-	    EDITOR=./edit_network strace -f virsh net-edit vagrant-libvirt;                        \
+	    TMPDIR=. EDITOR=./edit_network strace -etrace=!futex,poll -f virsh net-edit vagrant-libvirt;                        \
 	    virsh net-destroy vagrant-libvirt;                                           \
 	    virsh net-start vagrant-libvirt;                                             \
 	    stopped_nodes="";                                                            \
