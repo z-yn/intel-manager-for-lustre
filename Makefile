@@ -98,7 +98,7 @@ create_cluster:
 	    set -e;                                                                      \
 	    if $${JENKINS:-false}; then                                                  \
 	        HOSTNAME=$${HOSTNAME:-$$(hostname)};                                     \
-	        vm_prefix="$${HOSTNAME%%.*}";                                           \
+	        vm_prefix="$${HOSTNAME%%.*}";                                            \
 	    fi;                                                                          \
 	    export LIBVIRT_DEFAULT_URI=qemu:///system;                                   \
 	    if ! virsh list --all | grep -q $${vm_prefix}vm; then                        \
@@ -136,9 +136,11 @@ create_cluster:
 	    while [ -n "$$started_nodes" ]; do                                           \
 	        for node in {2..9}; do                                                   \
 	            if [[ $$started_nodes = *$$node* ]] &&                               \
-	               ssh -i id_rsa root@vm$$node "cat >> .ssh/authorized_keys"         \
-	                  < ~/.ssh/id_rsa.pub; then                                      \
-	                started_nodes=$${started_nodes/$$node/};                         \
+	                if [ -f ~/.ssh/id_rsa.pub ]; then                                \
+	                    ssh -i id_rsa root@vm$$node "cat >> .ssh/authorized_keys"    \
+	                       < ~/.ssh/id_rsa.pub; then                                 \
+	                    started_nodes=$${started_nodes/$$node/};                     \
+	                fi;                                                              \
 	            fi;                                                                  \
 	        done;                                                                    \
 	        sleep 1;                                                                 \
