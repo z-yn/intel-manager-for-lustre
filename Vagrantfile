@@ -162,7 +162,7 @@ __EOF
         if File.exist?("site-authorized_keys")
 		config.vm.provision "file", source: "site-authorized_keys", destination: "/tmp/authorized_keys"
 	end
-	config.vm.provision "shell", inline: "mkdir -m 0700 -p /root/.ssh; if [ -f /tmp/id_rsa.pub ] && ! grep -q -f /tmp/id_rsa.pub; then cat /tmp/id_rsa.pub >&2; cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys; fi; cat /home/vagrant/.ssh/authorized_keys /tmp/authorized_keys >> /root/.ssh/authorized_keys; chmod 0600 /root/.ssh/authorized_keys; cat /root/.ssh/authorized_keys >&2"
+	config.vm.provision "shell", inline: "mkdir -m 0700 -p /root/.ssh; if ! grep -q -f /tmp/id_rsa.pub /root/.ssh/authorized_keys; then cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys; fi; cat /home/vagrant/.ssh/authorized_keys /tmp/authorized_keys >> /root/.ssh/authorized_keys; chmod 0600 /root/.ssh/authorized_keys"
 
 	# And make the private key available
 	config.vm.provision "file", source: "id_rsa", destination: "/tmp/id_rsa"
