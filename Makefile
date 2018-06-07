@@ -81,7 +81,13 @@ create_cluster:
 	    cp ~/ssh-vagrant-site-keys site-authorized_keys; \
 	fi
 	time vagrant up
-	(echo "# VAGRANT START"; vagrant ssh-config; echo "# VAGRANT END") >> ~/.ssh/config
+	HOSTNAME=$${HOSTNAME:-$$(hostname)};                                      \
+	domainname="$${HOSTNAME#*.}";                                             \
+	hostname="$${HOSTNAME%%.*}";                                              \
+	(echo "# VAGRANT START";                                                  \
+	 vagrant ssh-config |                                                     \
+	 sed -e "/^Host/s/\(vm.*\)/\1 $$hostname\1 $$hostname\1.$$domainname /g"; \
+	 echo "# VAGRANT END") >> ~/.ssh/config
 	# need to have the ssh key that the VMs will use to reach back
 	# for virsh commands in .ssh/authorized_keys
 	set -ex;                                               \
