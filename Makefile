@@ -104,7 +104,6 @@ create_cluster:
 	    if ! virsh list --all | grep -q $${vm_prefix}vm; then                        \
 	        exit 0;                                                                  \
 	    fi;                                                                          \
-	    yum -y install strace; \
 	    EDITOR=./edit_network strace -f virsh net-edit vagrant-libvirt;                        \
 	    virsh net-destroy vagrant-libvirt;                                           \
 	    virsh net-start vagrant-libvirt;                                             \
