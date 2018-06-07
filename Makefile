@@ -104,7 +104,8 @@ create_cluster:
 	    if ! virsh list --all | grep -q $${vm_prefix}vm; then                        \
 	        exit 0;                                                                  \
 	    fi;                                                                          \
-	    EDITOR=./edit_network virsh net-edit vagrant-libvirt;                        \
+	    yum -y install strace; \
+	    EDITOR=./edit_network strace -f virsh net-edit vagrant-libvirt;                        \
 	    virsh net-destroy vagrant-libvirt;                                           \
 	    virsh net-start vagrant-libvirt;                                             \
 	    stopped_nodes="";                                                            \
@@ -115,8 +116,7 @@ create_cluster:
 	    for node in {5..8}; do                                                       \
 	        if ! virsh dumpxml $${vm_prefix}vm$$node |                               \
 	          grep "<controller type='scsi' index='0' model='virtio-scsi'>"; then    \
-	            yum -y install strace; \
-	            EDITOR=./edit_scsi strace -f virsh edit $${vm_prefix}vm$$node;                 \
+	            EDITOR=./edit_scsi virsh edit $${vm_prefix}vm$$node;                 \
 	            echo "Modified vm$$node to use virtio-scsi";                         \
 	        else                                                                     \
 	            echo "Interesting.  vm$$node already has virtio-scsi support in it"; \
