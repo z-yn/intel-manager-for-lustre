@@ -140,7 +140,7 @@ create_cluster:
 	                started_nodes=$${started_nodes/$$node/};                         \
 	                if [ -f ~/.ssh/id_rsa.pub ]; then                                \
 	                    ssh -i id_rsa root@vm$$node "cat >> .ssh/authorized_keys"    \
-	                       < ~/.ssh/id_rsa.pub; then                                 \
+	                       < ~/.ssh/id_rsa.pub                                       \
 	                fi;                                                              \
 	            fi;                                                                  \
 	        done;                                                                    \
