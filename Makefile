@@ -115,7 +115,8 @@ create_cluster:
 	    for node in {5..8}; do                                                       \
 	        if ! virsh dumpxml $${vm_prefix}vm$$node |                               \
 	          grep "<controller type='scsi' index='0' model='virtio-scsi'>"; then    \
-	            EDITOR=./edit_scsi virsh edit $${vm_prefix}vm$$node;                 \
+	            yum -y install strace; \
+	            EDITOR=./edit_scsi strace -f virsh edit $${vm_prefix}vm$$node;                 \
 	            echo "Modified vm$$node to use virtio-scsi";                         \
 	        else                                                                     \
 	            echo "Interesting.  vm$$node already has virtio-scsi support in it"; \
