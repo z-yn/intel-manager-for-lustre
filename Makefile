@@ -84,7 +84,7 @@ create_cluster:
 	(echo "# VAGRANT START"; vagrant ssh-config; echo "# VAGRANT END") >> ~/.ssh/config
 	# need to have the ssh key that the VMs will use to reach back
 	# for virsh commands in .ssh/authorized_keys
-	set -e;                                               \
+	set -ex;                                               \
 	if [ ! -f ~/.ssh/authorized_keys ]; then              \
 	    touch ~/.ssh/authorized_keys;                     \
 	    chmod 600  ~/.ssh/authorized_keys;                \
@@ -95,7 +95,7 @@ create_cluster:
 	fi
 	if rpm -q vagrant-libvirt ||                                                     \
 	   rpm -q sclo-vagrant1-vagrant-libvirt; then                                    \
-	    set -e;                                                                      \
+	    set -ex;                                                                      \
 	    if $${JENKINS:-false}; then                                                  \
 	        HOSTNAME=$${HOSTNAME:-$$(hostname)};                                     \
 	        vm_prefix="$${HOSTNAME%%.*}";                                            \
